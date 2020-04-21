@@ -1,40 +1,33 @@
 package forkjoin;
-
 public class QuickSort implements Sort {
-    private int split(int[] tab, int start, int koniec) {
-        int i = (start + koniec) / 2;
-        int pivot = tab[i];
-        swap(tab, i, koniec);
+    @Override
+    public void sort(int[] arr) {
+        sort(arr, 0, arr.length - 1);
+    }
+    protected int split(int[] arr, int start, int end) {
+        int i = (start + end) / 2;
+        int pivot = arr[i];
+        swap(arr, i, end);
         int j = start;
-        for (i = start; i < koniec; i++) {
-            if (tab[i] < pivot) {
-                swap(tab, i, j);
+        for (i = start; i < end; i++)
+            if (arr[i] < pivot) {
+                swap(arr, i, j);
                 j++;
             }
-        }
-        tab[koniec] = tab[j];
-        tab[j] = pivot;
+        arr[end] = arr[j];
+        arr[j] = pivot;
         return j;
     }
-
-    @Override
-    public void sort(int[] tab) {
-        sort(tab, 0, tab.length - 1);
+    protected void sort(int[] arr, int start, int end) {
+        int j = split(arr, start, end);
+        if (start < j)
+            sort(arr, start, j - 1);
+        if (j + 1 < end)
+            sort(arr, j + 1, end);
     }
-
-    private void sort(int[] tab, int start, int koniec) {
-        int j = split(tab, start, koniec);
-        if (start < j) {
-            sort(tab, start, j - 1);
-        }
-        if (j + 1 < koniec) {
-            sort(tab, j + 1, koniec);
-        }
-    }
-
-    private void swap(int[] tab, int i, int j) {
-        int tmp = tab[i];
-        tab[i] = tab[j];
-        tab[j] = tmp;
+    protected void swap(int[] arr, int i, int j) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
     }
 }
